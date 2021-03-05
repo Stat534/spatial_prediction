@@ -1,0 +1,99 @@
+---
+title: "Spatial Prediction and Model Selection"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+library(dplyr)
+library(ggplot2)
+library(leaflet)
+library(readr)
+library(rjags)
+library(scoringRules)
+```
+
+
+## Conditional Multivariate Normal Theory
+The conditional distribution, $p(\boldsymbol{Y_1}|
+\boldsymbol{Y_2}, \boldsymbol{\beta}, \sigma^2, \phi, \tau^2)$ is normal with:
+
+\vfill
+
+
+\vfill
+
+
+\vfill
+
+## Posterior Predictive Distribution
+
+The (posterior) predictive distribution $p(Y(\boldsymbol{s_0})|y)$ can be written as
+$$p(Y(\boldsymbol{s_0})|y) = \int p(Y(\boldsymbol{s_0})|y, \boldsymbol{\theta})p( \boldsymbol{\theta}|y) d  \boldsymbol{\theta}$$
+where 
+
+\vfill
+
+The posterior predictive distribution 
+
+\vfill
+
+
+\vfill
+
+## Prediction
+We will use cross-validation or a test/training approach to compare predictive models.
+
+\vfill
+
+Consider three data structures: continuous, count, and binary; how should we evaluate predictions in these situations?
+
+\newpage
+
+## Loss Functions
+Loss functions penalize predictions that deviate from the true values.
+
+\vfill
+
+For continuous or count data, squared error loss and absolute error loss are common.
+
+\vfill
+
+With binary data, a zero-one loss is frequently used.
+
+\vfill
+
+\vfill
+
+If we think about outcomes distributionally
+
+\vfill
+
+
+\vfill
+
+The Continuous Rank Probability Score (CRPS) defined as 
+$$CRPS(F,y) = \int_{-\infty}^{\infty}\left(F(u) - 1(u \geq y) \right)^2 du,$$
+where $F$ is the CDF of the predictive distribution, is a metric that measures distance between an observed value and a distribution.
+
+\newpage
+
+## CRPS
+Consider four situations and sketch the predictive distribution and the resultant CRPS for each scenario. How does the MSE function in each setting?
+
+1. Narrow predictive interval centered around outcome.
+\vfill
+
+2. Wide predictive interval centered around outcome.
+
+\vfill
+
+3. Narrow predictictive interval with outcome in tail.
+
+\vfill
+
+4. Wide predictive interval with outcome in tail.
+
+\vfill
+
