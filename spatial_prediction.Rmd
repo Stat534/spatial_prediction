@@ -8,9 +8,7 @@ knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(message = FALSE)
 library(dplyr)
 library(ggplot2)
-library(leaflet)
 library(readr)
-library(rjags)
 library(scoringRules)
 ```
 
@@ -79,6 +77,15 @@ where $F$ is the CDF of the predictive distribution, is a metric that measures d
 
 \newpage
 
+```{r, echo = T}
+crps_sample(y = 0, dat = 0)
+crps_sample(y = 0, dat = 2)
+crps_sample(y = 0, dat = c(2,-2))
+crps_sample(y = 0, dat = c(2,0,-2))
+crps_sample(y = 0, dat = c(2,0,0,0,0,-2))
+```
+
+
 ## CRPS
 Consider four situations and sketch the predictive distribution and the resultant CRPS for each scenario. How does the MSE function in each setting?
 
@@ -89,11 +96,64 @@ Consider four situations and sketch the predictive distribution and the resultan
 
 \vfill
 
-3. Narrow predictictive interval with outcome in tail.
+3. Narrow predictive interval with outcome in tail.
 
 \vfill
 
 4. Wide predictive interval with outcome in tail.
 
 \vfill
+
+\newpage
+
+\vfill
+```{r}
+y <- 0
+sample <- rnorm(10000)
+f1 <- tibble(data = sample) %>% ggplot(aes(x = data)) + 
+  geom_histogram(color = 'grey', fill = 'grey', bins = 100) +
+  theme_bw() + geom_vline(xintercept = 0) +
+  annotate('text', label = paste("CRPS = ",round(crps_sample(y = y, dat = sample),2)), x = 0, y = 100) + xlim(-10,10)+ ylim(NA,1000)
+```
+
+
+```{r}
+y <- 0
+sample <- rnorm(10000, sd = 3)
+f2 <- tibble(data = sample) %>% ggplot(aes(x = data)) + 
+  geom_histogram(color = 'grey', fill = 'grey', bins = 100) +
+  theme_bw() + geom_vline(xintercept = 0) +
+  annotate('text', label = paste("CRPS = ",round(crps_sample(y = y, dat = sample),2)), x = 0, y = 100) + xlim(-10,10)+ ylim(NA,1000)
+```
+\vfill
+
+
+```{r}
+y <- 0
+sample <- rnorm(10000, mean = -2)
+f3 <- tibble(data = sample) %>% ggplot(aes(x = data)) + 
+  geom_histogram(color = 'grey', fill = 'grey', bins = 100) +
+  theme_bw() + geom_vline(xintercept = 0) +
+  annotate('text', label = paste("CRPS = ",round(crps_sample(y = y, dat = sample),2)), x = 0, y = 100) + xlim(-10,10)+ ylim(NA,1000)
+```
+
+
+\vfill
+
+
+
+```{r}
+y <- 0
+sample <- rnorm(10000, mean = -2, sd = 3)
+f4 <- tibble(data = sample) %>% ggplot(aes(x = data)) + 
+  geom_histogram(color = 'grey', fill = 'grey', bins = 100) +
+  theme_bw() + geom_vline(xintercept = 0) +
+  annotate('text', label = paste("CRPS = ",round(crps_sample(y = y, dat = sample),2)), x = 0, y = 100) + xlim(-10,10) + ylim(NA,1000)
+```
+
+\vfill
+
+```{r}
+gridExtra::grid.arrange(f1, f2, f3, f4)
+```
 
